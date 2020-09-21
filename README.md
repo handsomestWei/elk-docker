@@ -1,6 +1,6 @@
 # 搭建ELK日志采集分析监控告警平台
 ## 平台架构
-
+![](/resources/elk-docker.jpg?raw = true)
 
 ## 组件依赖
 
@@ -57,9 +57,9 @@ multiline.match: after
 ```
 filter {
     mutate {
-	    ## 移除字段
+	## 移除字段
         remove_field => ["@version","type"]
-		## 移除标签
+        ## 移除标签
         remove_tag => ["beats_input_codec_plain_applied"]
     }
 }
@@ -72,7 +72,7 @@ if "imageName-err" in [tags] {
           	index => "imageName-err-%{+YYYY.MM.dd}"
         }
         stdout {
-		    codec => rubydebug
+		codec => rubydebug
         }
 }
 ```
