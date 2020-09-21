@@ -1,6 +1,6 @@
 # 搭建ELK日志采集分析监控告警平台
 ## 平台架构
-![](/resources/elk-docker.jpg?raw = true)
+![架构图](https://github.com/handsomestWei/elk-docker/blob/master/resources/elk-docker.jpg)
 
 ## 组件依赖
 
@@ -10,6 +10,7 @@
 |[Logstash](#部署Logstash)                              |6.5.4|
 |[Elasticsearch](#部署Elasticsearch)                              |6.8.4|
 |[Kibana+Sentinl](#部署Kibana)                              |6.8.4|
+|Redis                              |——|
 
 
 ## 部署Filebeat
