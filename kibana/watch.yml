@@ -1,0 +1,65 @@
+{
+  "actions": {
+    "Webhook_b32fa3de-0028-40b2-9880-a31a6c6bf188": {
+      "name": "dingding-Webhook",
+      "throttle_period": "5",
+      "webhook": {
+        "priority": "low",
+        "stateless": false,
+        "method": "POST",
+        "host": "oapi.dingtalk.com",
+        "port": "443",
+        "path": "/robot/send?access_token=qwer",
+        "body": "{\n    \"msgtype\":\"text\",\n    \"text\":{\n        \"content\":\"XX环境\n{{watcher.title}}有{{payload.hits.total}}条异常日志        \"\n    }\n}",
+        "params": {
+          "watcher": "{{watcher.title}}",
+          "payload_count": "{{payload.hits.total}}"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "auth": "",
+        "message": "",
+        "use_https": true
+      }
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "index": [
+          "imageName-err*"
+        ],
+        "body": {
+          "query": {
+            "bool": {
+              "filter": {
+                "range": {
+                  "@timestamp": {
+                    "from": "now-6m"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "script": {
+      "script": "payload.hits.total >= 1"
+    }
+  },
+  "trigger": {
+    "schedule": {
+      "later": "every 5 minutes"
+    }
+  },
+  "disable": false,
+  "report": false,
+  "title": "XXX应用",
+  "save_payload": false,
+  "spy": false,
+  "impersonate": false
+}

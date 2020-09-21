@@ -1,0 +1,35 @@
+filebeat.prospectors:
+- input_type: log
+  enabled: true
+  ## 包含关键字
+  include_lines: ["ERR","error"]
+  ## k8s pod日志目录/var/log/pods/
+  paths:
+    - /app/logs/nameSpace_imageName-*/imageName/*.log
+  ignore_older: 24h
+  clean_inactive: 36h
+  ## 匹配下文
+  multiline.pattern: '^[["log":"\\u0009]]+(at|\.{3})\b|^Caused by:'
+  multiline.negate: false
+  multiline.match: after
+  ## 识别软链接
+  symlinks: true
+  ## 自定义字段
+  fields:
+    env: hostName
+  ## 自定义标签
+  tags: ["imageName-err"]
+processors:
+  ## 丢弃字段
+- drop_fields:
+    fields: ["@version","source","offset","type","input_type","host","beat.version","beat.name","beat.hostname","_id","_type","_score"]
+output.redis:
+  hosts: ["redisIpAddr"]
+  port: 6379
+  db: 2
+  password: ""
+  ## redis list名
+  key: "imageName-err"
+output.console:
+  enabled: false
+  pretty: true
