@@ -10,13 +10,10 @@ docker rm -f filebeat
 image=docker.elastic.co/beats/filebeat:5.5.1
 docker pull $image
 ## 指定root用户运行，才有权限访问挂载的目录
+## 挂载pod日志目录、容器目录、配置文件、数据目录
 docker run -d --name filebeat --user root -p 5043:5043 -it \
-## 挂载pod目录
 -v /var/log/pods/:/app/logs \
-## 挂载容器目录
 -v /var/lib/docker/containers/:/var/lib/docker/containers \
-## 挂载配置文件
 -v /root/elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml \
-## 挂载数据目录
 -v /root/elk/filebeat/data/:/usr/share/filebeat/data \
 $image
